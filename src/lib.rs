@@ -11,28 +11,18 @@ pub struct Zombie<M: ManagedTypeApi> {
 
 #[multiversx_sc::contract]
 pub trait ZombiesContract {
-
     #[init]
     fn init(&self) {
-      self.dna_digits().set(16u8);
-      self.zombies_count().set(1usize);
+        self.dna_digits().set(16u8);
+        self.zombies_count().set(1usize);
     }
-
-    fn create_zombie(&self, name: ManagedBuffer, dna: u64) {
-      self.zombies_count().update(|id| {
-        self.zombies(id).set(Zombie { name, dna });
-        *id +=1;
-      });
-    }
-
-    // start here
 
     #[storage_mapper("dna_digits")]
     fn dna_digits(&self) -> SingleValueMapper<u8>;
 
     #[storage_mapper("zombies_count")]
     fn zombies_count(&self) -> SingleValueMapper<usize>;
-    
+
     #[storage_mapper("zombies")]
-    fn zombies(&self, id: &usize) -> SingleValueMapper<Zombie<Self::Api>>;
-  }
+    fn zombies(&self, id: usize) -> SingleValueMapper<Zombie<Self::Api>>;
+}
