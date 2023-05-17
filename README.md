@@ -26,8 +26,22 @@ classDiagram
         name: ManagedBuffer
         dna: u64
     }
-    Zombie <|-- zombie
-
+    create_zombie --|> Zombie  
+    class create_zombie {
+        zombie(id) -> new Zombie
+        zombies_count +1
+    }
+    zombie <|-- create_zombie  
+    zombies_count  <|-- create_zombie 
+    class generate_random_dna{
+        -> u64
+    }
+    class create_random_zombie {
+        create_zombie(name, dna)
+     }
+    create_random_zombie --|> generate_random_dna 
+    create_zombie <|-- create_random_zombie
+    generate_random_dna --|> dna_digits
 ```
 
  
