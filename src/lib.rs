@@ -19,6 +19,7 @@ pub trait ZombiesContract {
 
     fn create_zombie(&self, name: ManagedBuffer, dna: u64) {
         self.zombies_count().update(|id| {
+            self.new_zombie_event(*id, &name, dna);
             self.zombies(id).set(Zombie { name, dna });
             *id += 1;
         });
@@ -39,6 +40,13 @@ pub trait ZombiesContract {
         self.create_zombie(name, rand_dna);
     }
 
+    #[event("new_zombie_event")]
+    fn new_zombie_event(
+        &self,
+        #[indexed] zombie_id: usize,
+        name: &ManagedBuffer,
+        #[indexed] dna: u64,
+    );
 
     #[storage_mapper("dna_digits")]
     fn dna_digits(&self) -> SingleValueMapper<u8>;

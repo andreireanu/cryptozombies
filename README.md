@@ -42,6 +42,10 @@ classDiagram
     create_random_zombie --|> generate_random_dna 
     create_zombie <|-- create_random_zombie
     generate_random_dna --|> dna_digits
+    class new_zombie_event {
+    }
+    create_random_zombie --|> new_zombie_event
+    
 ```
 
  
