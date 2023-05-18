@@ -45,6 +45,18 @@ classDiagram
     class new_zombie_event {
     }
     create_random_zombie --|> new_zombie_event
+    class zombie_owner{
+        id -> ManagedAddress    
+    }
+    SingleValueMapper <|-- zombie_owner
+    class UnorderedSetMapper{
+    }
+    class owned_zombies{
+        ManagedAddres -> usize
+    }
+    UnorderedSetMapper <|-- owned_zombies
+    create_zombie --|> zombie_owner 
+    create_zombie --|> owned_zombies 
     
 ```
 
