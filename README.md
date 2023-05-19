@@ -57,7 +57,10 @@ classDiagram
     UnorderedSetMapper <|-- owned_zombies
     create_zombie --|> zombie_owner 
     create_zombie --|> owned_zombies 
-    
+    class feed_and_multiply { 
+        zombie_id: usize, 
+        target_dna: u64
+    }
 ```
 
  

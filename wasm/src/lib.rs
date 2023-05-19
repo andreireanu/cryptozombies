@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////
 
 // Init:                                 1
-// Endpoints:                            3
-// Async Callback (empty):               1
-// Total number of exported functions:   5
+// Endpoints:                            4
+// Async Callback:                       1
+// Total number of exported functions:   6
 
 #![no_std]
 #![feature(alloc_error_handler, lang_items)]
@@ -20,8 +20,8 @@ multiversx_sc_wasm_adapter::endpoints! {
     (
         generate_random_dna
         create_random_zombie
+        feed_on_kitty
         zombies
+        callBack
     )
 }
-
-multiversx_sc_wasm_adapter::empty_callback! {}

@@ -1,10 +1,10 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
-use crate::zombie::Zombie;
+use crate::{storage, zombie::Zombie};
 
 #[multiversx_sc::module]
-pub trait ZombieFactory: crate::storage::Storages {
+pub trait ZombieFactory: storage::Storages {
     fn create_zombie(&self, caller: ManagedAddress, name: ManagedBuffer, dna: u64) {
         self.zombies_count().update(|id| {
             self.new_zombie_event(*id, &name, dna);
