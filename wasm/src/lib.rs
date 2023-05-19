@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////
 
 // Init:                                 1
-// Endpoints:                            4
+// Endpoints:                            5
 // Async Callback:                       1
-// Total number of exported functions:   6
+// Total number of exported functions:   7
 
 #![no_std]
 #![feature(alloc_error_handler, lang_items)]
@@ -18,9 +18,10 @@ multiversx_sc_wasm_adapter::panic_handler!();
 multiversx_sc_wasm_adapter::endpoints! {
     cryptozombies
     (
+        set_crypto_kitties_sc_address
         generate_random_dna
         create_random_zombie
-        feed_on_kitty
+        is_ready
         zombies
         callBack
     )

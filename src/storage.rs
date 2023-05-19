@@ -23,4 +23,7 @@ pub trait Storages {
 
     #[storage_mapper("owned_zombies")]
     fn owned_zombies(&self, owner: &ManagedAddress) -> UnorderedSetMapper<usize>;
+
+    #[storage_mapper("cooldown_time")]
+    fn cooldown_time(&self) -> SingleValueMapper<u64>;
 }

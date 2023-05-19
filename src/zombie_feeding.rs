@@ -37,6 +37,7 @@ pub trait ZombieFeeding: storage::Storages + zombie_factory::ZombieFactory {
             caller != self.zombie_owner(&zombie_id).get(),
             "You can only feed your own zombie"
         );
+        require!(self.is_ready(zombie_id), "Zombie is not ready");
         let my_zombie = self.zombies(&zombie_id).get();
         let dna_digits = self.dna_digits().get();
         let max_dna_value = u64::pow(10u64, dna_digits as u32);
@@ -46,6 +47,20 @@ pub trait ZombieFeeding: storage::Storages + zombie_factory::ZombieFactory {
             new_dna = new_dna - new_dna % 100 + 99;
         }
         self.create_zombie(caller, ManagedBuffer::from(b"kitty"), new_dna);
+        self.trigger_cooldown(zombie_id);
+    }
+
+    fn trigger_cooldown(&self, zombie_id: usize) {
+        let cooldown_time = self.cooldown_time().get();
+        self.zombies(&zombie_id).update(|zombie| {
+            zombie.ready_time = self.blockchain().get_block_timestamp() + cooldown_time
+        });
+    }
+
+    #[view]
+    fn is_ready(&self, zombie_id: usize) -> bool {
+        let my_zombie = self.zombies(&zombie_id).get();
+        my_zombie.ready_time <= self.blockchain().get_block_timestamp()
     }
 
     #[callback]
@@ -63,7 +78,6 @@ pub trait ZombieFeeding: storage::Storages + zombie_factory::ZombieFactory {
         }
     }
 
-    #[endpoint]
     fn feed_on_kitty(&self, zombie_id: usize, kitty_id: usize) {
         let crypto_kitties_sc_address = self.crypto_kitties_sc_address().get();
         self.kitty_proxy(crypto_kitties_sc_address)

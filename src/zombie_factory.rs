@@ -8,7 +8,8 @@ pub trait ZombieFactory: storage::Storages {
     fn create_zombie(&self, caller: ManagedAddress, name: ManagedBuffer, dna: u64) {
         self.zombies_count().update(|id| {
             self.new_zombie_event(*id, &name, dna);
-            self.zombies(id).set(Zombie { name, dna });
+            let cooldown_time = self.cooldown_time().get();
+            self.zombies(id).set(Zombie { name, dna, level: 1u16, ready_time: self.blockchain().get_block_timestamp() + cooldown_time, });
             self.owned_zombies(&caller).insert(*id);
             self.zombie_owner(id).set(caller);
             *id += 1;
