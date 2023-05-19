@@ -26,4 +26,10 @@ pub trait Storages {
 
     #[storage_mapper("cooldown_time")]
     fn cooldown_time(&self) -> SingleValueMapper<u64>;
+
+    #[storage_mapper("level_up_fee")]
+    fn level_up_fee(&self) -> SingleValueMapper<BigUint>;
+
+    #[storage_mapper("collected_fees")]
+    fn collected_fees(&self) -> SingleValueMapper<BigUint>;
 }
