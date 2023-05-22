@@ -1,7 +1,7 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
-use crate::{storage, zombie_factory};
+use crate::{storage, zombie_factory };
 use crypto_kitties_proxy::Kitty;
 
 mod crypto_kitties_proxy {

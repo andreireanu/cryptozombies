@@ -9,14 +9,18 @@ pub trait ZombieHelper: storage::Storages {
         require!(my_zombie.level >= level, "Zombie is too low level");
     }
 
+    fn check_zombie_belongs_to_caller(&self, zombie_id: usize, caller: &ManagedAddress) {
+        require!(
+            caller == &self.zombie_owner(&zombie_id).get(),
+            "Only the owner of the zombie can perform this operation"
+        );
+    }
+
     #[endpoint]
     fn change_name(&self, zombie_id: usize, name: ManagedBuffer) {
         self.check_above_level(2u16, zombie_id);
         let caller = self.blockchain().get_caller();
-        require!(
-            caller == self.zombie_owner(&zombie_id).get(),
-            "Only the owner of the zombie can perform this operation"
-        );
+        self.check_zombie_belongs_to_caller(zombie_id, &caller);
         self.zombies(&zombie_id)
             .update(|my_zombie| my_zombie.name = name);
     }
@@ -25,10 +29,7 @@ pub trait ZombieHelper: storage::Storages {
     fn change_dna(&self, zombie_id: usize, dna: u64) {
         self.check_above_level(20u16, zombie_id);
         let caller = self.blockchain().get_caller();
-        require!(
-            caller == self.zombie_owner(&zombie_id).get(),
-            "Only the owner of the zombie can perform this operation"
-        );
+        self.check_zombie_belongs_to_caller(zombie_id, &caller);
         self.zombies(&zombie_id)
             .update(|my_zombie| my_zombie.dna = dna);
     }
@@ -40,8 +41,6 @@ pub trait ZombieHelper: storage::Storages {
         let fee = self.level_up_fee().get();
         require!(payment_amount == fee, "Payment must be must be 0.001 EGLD");
         self.collected_fees().update(|fees| *fees += fee);
-        self.zombies(&zombie_id)
-            .update(|my_zombie| my_zombie.level += 1);
         self.zombies(&zombie_id)
             .update(|my_zombie| my_zombie.level += 1);
     }

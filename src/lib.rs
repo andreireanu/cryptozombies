@@ -17,6 +17,8 @@ pub trait ZombiesContract:
         self.dna_digits().set(16u8);
         self.zombies_count().set(1usize);
         self.cooldown_time().set(86400u64);
+        self.level_up_fee().set(BigUint::from(1000000000000000u64));
+        self.attack_victory_probability().set(70u8);
     }
 
     #[only_owner]

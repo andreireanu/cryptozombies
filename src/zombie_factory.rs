@@ -9,7 +9,7 @@ pub trait ZombieFactory: storage::Storages {
         self.zombies_count().update(|id| {
             self.new_zombie_event(*id, &name, dna);
             let cooldown_time = self.cooldown_time().get();
-            self.zombies(id).set(Zombie { name, dna, level: 1u16, ready_time: self.blockchain().get_block_timestamp() + cooldown_time, });
+            self.zombies(id).set(Zombie { name, dna, level: 1u16, ready_time: self.blockchain().get_block_timestamp() + cooldown_time, win_count: 0usize, loss_count: 0usize });
             self.owned_zombies(&caller).insert(*id);
             self.zombie_owner(id).set(caller);
             *id += 1;
@@ -18,7 +18,6 @@ pub trait ZombieFactory: storage::Storages {
 
     #[view]
     fn generate_random_dna(&self) -> u64 {
-        // start here
         let mut rand_source = RandomnessSource::new();
         let dna_digits = self.dna_digits().get();
         let max_dna_value = u64::pow(10u64, dna_digits as u32);

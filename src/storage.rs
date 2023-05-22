@@ -32,4 +32,7 @@ pub trait Storages {
 
     #[storage_mapper("collected_fees")]
     fn collected_fees(&self) -> SingleValueMapper<BigUint>;
+
+    #[storage_mapper("attack_victory_probability")]
+    fn attack_victory_probability(&self) -> SingleValueMapper<u8>;
 }
